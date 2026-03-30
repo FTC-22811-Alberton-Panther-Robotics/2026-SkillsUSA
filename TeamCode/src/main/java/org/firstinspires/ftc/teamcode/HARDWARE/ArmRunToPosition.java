@@ -7,31 +7,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class ArmRunToPosition {
     public static DcMotor ArmRotate;
-    //    public static Servo Wrist;
-    public static Servo Claw;
-    HardwareMap hwMap;
-    private static final double CLOSE_CLAW = 1;
-    private static final double OPEN_CLAW = 0;
-    //   private static final double WRIST_DOWN = 0;
-    // private static final double WRIST_UP = 1;
-
     public void init(HardwareMap hwMap) {
         ArmRotate = hwMap.get(DcMotor.class, "Arm");
-        //Wrist= hwMap.get(Servo.class, "WristRotate");
-        Claw = hwMap.get(Servo.class, "Claw");
-
         ///  find if this is correct
-        ArmRotate.setDirection(DcMotorSimple.Direction.FORWARD);
+        ArmRotate.setTargetPosition(0);
         ArmRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ArmRotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+// This keeps the arm from falling when you let go of the triggers
         ArmRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    }
-
-    public void closeClaw(){
-        Claw.setPosition(CLOSE_CLAW);
-    }
-    public void openClaw(){
-        Claw.setPosition(OPEN_CLAW);
     }
 
     public void armStow(){
@@ -44,8 +27,6 @@ public class ArmRunToPosition {
         ArmRotate.setTargetPosition(67);
 
     }
-    //    public static void wristDown(){Wrist.setPosition(WRIST_DOWN);}
-//    public static void wristUp(){Wrist.setPosition(WRIST_UP);}
     public static void rotateArm(){ArmRotate.setPower(.5);}
     public static void unrotateArm(){ArmRotate.setPower(-.5);}
 

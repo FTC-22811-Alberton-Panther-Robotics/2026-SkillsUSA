@@ -28,18 +28,40 @@ public class SkillsUSAOpmode extends LinearOpMode {
         while (opModeIsActive()) {
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
+
             tankDriveBasic.tankDrive(drive, turn);
+            ArmClawWristHardware robot = new ArmClawWristHardware();
+            int armTarget = 0; // This variable tracks where the arm SHOULD be
+            final int INCREMENT = 1; // How fast the arm moves with triggers
 
-            if(gamepad1.left_trigger > .1){
-                ArmClawWristHardware.rotateArm();
-            } else if (gamepad1.right_trigger >.1) ArmClawWristHardware.unrotateArm();
-            else ArmClawWristHardware.stopArm();
+            robot.init(hardwareMap);
+            waitForStart();
 
-            if (gamepad1.right_bumper){
-                armClawWristHardware.openClaw();
-            }else if (gamepad1.left_bumper){
-                armClawWristHardware.closeClaw();
-            }
+            while (opModeIsActive()) {
+                // --- TRIGGER INCREMENTAL CONTROL ---
+                if (gamepad1.left_trigger > 0.8) {
+                    armTarget += INCREMENT;
+                } else if (gamepad1.right_trigger > 0.8) {
+                    armTarget -= INCREMENT;
+                }
+
+
+                // --- SAFETY LIMITS ---
+                // Adjust these numbers so your arm doesn't hit the floor or flip too far back
+                if (armTarget > 740) {
+                    armTarget = 740;
+                } else if (armTarget <= 60) {
+                    armTarget = 60;
+                }
+
+                // --- SEND COMMAND TO MOTOR ---
+                robot.setArmTarget(armTarget);
+
+                if (gamepad1.right_bumper) {
+                    armClawWristHardware.openClaw();
+                } else if (gamepad1.left_bumper) {
+                    armClawWristHardware.closeClaw();
+                }
 
 //            if(gamepad1.a){
 //                armClawWristHardware.armHover();
@@ -48,11 +70,12 @@ public class SkillsUSAOpmode extends LinearOpMode {
 //            }
 
 
-            telemetry.addData("Drive Power", drive);
-            telemetry.addData("Turn Power", turn);
-            telemetry.addData("Arm Encoder", ArmClawWristHardware.ArmRotate.getCurrentPosition());
-            telemetry.addData("Claw Encoder", ArmClawWristHardware.Claw.getPosition());
-            telemetry.update();
+                telemetry.addData("Drive Power", drive);
+                telemetry.addData("Turn Power", turn);
+                telemetry.addData("Target:", armTarget);
+                telemetry.addData("Actual:", robot.ArmRotate.getCurrentPosition());
+                telemetry.update();
+            }
         }
     }
 }
