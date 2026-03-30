@@ -16,8 +16,8 @@ public class TankDriveBasicFourMotor {
 
         leftDrive = hwMap.get(DcMotor.class, "leftDrive");
 
-        rightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void tankDrive(double drivePower, double turnPower) {

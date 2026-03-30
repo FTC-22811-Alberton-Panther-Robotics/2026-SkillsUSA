@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
  * forward (up) or reverse (down).
  */
 @TeleOp(name = "Motor Port Test", group = "Test")
-public class motorporttest extends LinearOpMode {
+public class motorPortTest extends LinearOpMode {
     private int motorPortNumber = 0; // Change this to the port number of your motor
     private int selectionIndex = 0;
     private DcMotorControllerEx motorController;
