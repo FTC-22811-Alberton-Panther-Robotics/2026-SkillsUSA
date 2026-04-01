@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.HARDWARE.ArmClawWristHardware;
+import org.firstinspires.ftc.teamcode.HARDWARE.CameraHardware;
 import org.firstinspires.ftc.teamcode.HARDWARE.TankDriveBasicFourMotor;
 
 @TeleOp(name="SkillsUSA Main Drive", group="Linear Opmode")
@@ -18,6 +19,7 @@ public class SkillsUSAOpmode extends LinearOpMode {
 
 
         // 1. Initialize the hardware using the method in your TankDriveBasicFourMotor class
+        CameraHardware camera = new CameraHardware(hardwareMap,"Webcam");
         tankDriveBasic.init(hardwareMap);
         armClawWristHardware.init(hardwareMap);
 
@@ -26,6 +28,7 @@ public class SkillsUSAOpmode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            camera.init();
             double turn = gamepad1.right_stick_x;
             double drive = -gamepad1.left_stick_y;
 
